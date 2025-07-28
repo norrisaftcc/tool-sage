@@ -65,4 +65,4 @@ I've prepared some materials for you. What would you like to work on today?"""
         # Clear the student input
         shared["student_input"] = ""
         
-        return "response_delivered"
+        return "completed"
