@@ -34,21 +34,39 @@ The SAGE system is designed as an "agent swarm" with the following specialized a
 
 ### Common Commands
 
-Since this is currently a documentation-only repository with no code implementation yet, there are no build, test, or lint commands. When implementing the system:
-
 ```bash
-# Create a new issue
+# Install the project in development mode
+pip install -e ".[dev]"
+
+# Run tests
+sage test
+
+# Start interactive learning session
+sage learn
+
+# GitHub workflow (use gh CLI for all GitHub operations)
 gh issue create --title "Issue title" --body "Issue description"
-
-# Create a pull request
-gh pr create --title "PR title" --body "PR description"
-
-# List open issues
+gh pr create --title "PR title" --body "PR description" --head branch-name
 gh issue list
-
-# View repository status
 gh repo view
 ```
+
+### Git Push Issues & Solutions
+
+Due to authentication complexities, use the following approach:
+
+1. **For pushing branches**: If `git push` fails with auth errors, create the PR directly:
+   ```bash
+   # Instead of git push, create PR with local branch
+   gh pr create --title "Title" --body "Body" --head feature/branch-name
+   ```
+
+2. **Alternative**: Configure gh as git credential helper:
+   ```bash
+   gh auth setup-git
+   ```
+
+3. **If all else fails**: Push through gh repo fork/sync commands or use the GitHub web interface
 
 ## Design Philosophy
 
