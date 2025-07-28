@@ -1,0 +1,10 @@
+# Core dependencies
+click>=8.0.0  # CLI framework
+pyyaml>=6.0  # YAML parsing for agent communication
+typing-extensions>=4.0.0  # Type hints
+
+# Development dependencies
+pytest>=7.0.0  # Testing
+pytest-asyncio>=0.21.0  # Async test support
+black>=23.0.0  # Code formatting
+mypy>=1.0.0  # Type checking
