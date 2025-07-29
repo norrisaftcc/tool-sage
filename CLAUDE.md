@@ -4,7 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Tool-SAGE (Scholar's Adaptive Growth Engine) is an adaptive learning assistant system design project. The repository currently contains design documentation for a multi-agent learning system based on PocketFlow's minimalist architecture.
+SAGE (Scholar's Adaptive Growth Engine) is a **framework** for building adaptive learning systems. The core insight: learning is a graph traversal problem, and pedagogical strategies can be implemented as autonomous agents.
+
+### Framework Philosophy
+- **Learning paths** are directed graphs with nodes and edges
+- **Agents** implement teaching strategies (Socratic method, scaffolding, etc.)
+- **Adaptation** happens through graph traversal decisions
+- **Composability** allows mixing pedagogical approaches
+
+See [VISION.md](VISION.md) for the complete framework vision.
 
 ## Repository Structure
 
@@ -68,30 +76,59 @@ Due to authentication complexities, use the following approach:
 
 3. **If all else fails**: Push through gh repo fork/sync commands or use the GitHub web interface
 
-## Design Philosophy
+## Development Philosophy
 
-The system follows PocketFlow's minimalist principles:
-- Each agent should be simple and focused (aim for ~100 lines)
-- Use composition over complexity
-- All state is shared through a central store
-- Agents communicate via message queues
-- Async parallel processing for scalability
+### Framework First
+When developing SAGE, remember we're building a **framework**, not just an app:
+- Every feature should be generalizable
+- APIs should support multiple use cases
+- Documentation should include examples of different implementations
+- Tests should demonstrate framework flexibility
 
-## Implementation Notes
+### Design Principles
+- **Minimalist Core**: Each component ~100 lines (PocketFlow philosophy)
+- **Composable**: Mix and match agents/nodes for different pedagogies
+- **Observable**: Every learning decision should be trackable
+- **Extensible**: Easy to add new node types and agents
 
-When implementing this design:
-1. Start with the core Node/Flow/SharedStore abstractions
-2. Implement one agent at a time, testing in isolation
-3. Build the orchestrator last to coordinate proven agents
-4. Use YAML for configuration and inter-agent communication
-5. Leverage async/await for parallel operations
+### Implementation Guidelines
 
-## Future Development
+#### Creating New Node Types
+```python
+class YourNode(Node):
+    """Represents a specific learning activity."""
+    def prep(self, shared): # Gather needed data
+    def exec(self, data): # Perform the activity
+    def post(self, shared, prep_res, exec_res): # Update state & decide next
+```
 
-The design document outlines potential extensions:
-- Peer Learning Agent
-- Resource Recommendation Agent
-- Parent/Teacher Dashboard Agent
-- Gamification Agent
+#### Creating New Agents
+```python
+class YourAgent(Node):
+    """Implements a pedagogical strategy."""
+    # Agents are just specialized nodes that make decisions
+```
 
-Each new agent should follow the established patterns and integrate through the shared store mechanism.
+#### Testing Framework Features
+- Test graph traversal scenarios
+- Test different agent combinations
+- Test state persistence across sessions
+- Test analytics and observability
+
+## Future Framework Capabilities
+
+Priority features for making SAGE a true framework:
+
+1. **Graph Visualization** - See learning paths visually
+2. **Path Designer DSL** - Define curricula as code
+3. **Plugin Architecture** - Easy integration of content sources
+4. **Analytics Hooks** - Measure learning effectiveness
+5. **Multi-modal Support** - Text, video, interactive content
+
+## Contributing to the Framework
+
+When adding features, ask:
+- "How does this help others build learning systems?"
+- "Is this specific to one use case or broadly applicable?"
+- "Can this be composed with other components?"
+- "Does this maintain the minimalist philosophy?"

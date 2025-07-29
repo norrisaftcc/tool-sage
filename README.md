@@ -1,7 +1,15 @@
-# tool-sage
-Scholar's Adaptive Growth Engine
+# SAGE - Scholar's Adaptive Growth Engine
 
-An adaptive learning assistant system built with a minimalist multi-agent architecture.
+A framework for building adaptive learning systems where learning paths are graphs and agents are pedagogical strategies.
+
+## What is SAGE?
+
+SAGE is not just another tutoring app - it's a **framework** that treats learning as a graph traversal problem. Build adaptive learning experiences by composing:
+
+- 🎯 **Learning Graphs** - Design curricula as traversable paths
+- 🤖 **Pedagogical Agents** - Implement teaching strategies as autonomous agents  
+- 🔄 **Adaptive Flows** - Create branching paths based on learner performance
+- 📊 **Learning Analytics** - Track and optimize learning journeys
 
 ## Quick Start
 
@@ -36,21 +44,48 @@ Test the system:
 sage test
 ```
 
-## Architecture
+## Core Concepts
 
-SAGE uses a multi-agent system where specialized agents collaborate:
+### Learning as Graphs
+```python
+# Define learning paths as directed graphs
+lesson = LearningPath("Python Basics")
+lesson.add_sequence([
+    ConceptNode("variables"),
+    PracticeNode("exercises"),  
+    BranchNode("check_mastery", {
+        "passed": ConceptNode("functions"),
+        "needs_review": ReviewNode("variables")
+    })
+])
+```
 
-- **Orchestrator Agent**: Coordinates all other agents
-- **Learning Profile Agent**: Analyzes student learning patterns
-- **Response Generator**: Creates personalized responses
-- More agents coming soon!
+### Agents as Teachers
+Each agent implements a pedagogical strategy:
+- **Orchestrator** - Sequences curriculum
+- **ProfileAgent** - Models learner characteristics
+- **AssessmentAgent** - Evaluates progress
+- **AdaptationAgent** - Personalizes content
 
-## Development
+### Framework Architecture
 
-The system is built on a minimalist framework inspired by PocketFlow, with three core abstractions:
+Built on three minimalist abstractions:
+- `Node` - Learning activities or decisions
+- `Flow` - Orchestrates graph traversal
+- `SharedStore` - Maintains learning state
 
-- `Node`: Individual agent logic
-- `SharedStore`: Central state management
-- `Flow`: Agent coordination and execution
+## Documentation
 
-See `sage_design_doc.md` for detailed architecture information.
+- 📖 [VISION.md](VISION.md) - Framework philosophy and future direction
+- 🏗️ [sage_design_doc.md](sage_design_doc.md) - Technical architecture
+- 🤖 [CLAUDE.md](CLAUDE.md) - AI assistant development guide
+
+## Contributing
+
+SAGE is designed to be extended. Create new:
+- Node types for learning activities
+- Agents for teaching strategies  
+- Visualizers for learning paths
+- Analytics for optimization
+
+Join us in building the future of adaptive learning!
