@@ -22,12 +22,15 @@ def create_sage_flow() -> Flow:
         # Add more agents as we build them
         "adapt": responder,  # Placeholder
         "question": responder,  # Placeholder
-        "progress": responder  # Placeholder
+        "progress": responder,  # Placeholder
+        "end": None  # Termination state
     }
     
-    # All agents return to orchestrator
+    # Profile agent returns to orchestrator for next decision
     profile_agent >> orchestrator
-    responder >> orchestrator
+    
+    # Responder ends the flow cycle (no return to orchestrator)
+    # This prevents infinite loops
     
     # Create flow with initial shared state
     flow = Flow(

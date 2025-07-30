@@ -1,4 +1,20 @@
-# SAGE Adaptive Learning Assistant System
+# SAGE Adaptive Learning Framework
+
+## Framework Vision
+
+SAGE is a framework for building adaptive learning systems based on the principle that **learning is a graph traversal problem**. Rather than a single application, SAGE provides composable components for creating personalized learning experiences.
+
+### Key Insight
+- **Learning paths** are directed graphs
+- **Agents** are pedagogical strategies  
+- **Nodes** are learning activities
+- **Edges** are adaptive transitions
+
+See [VISION.md](VISION.md) for detailed framework philosophy.
+
+---
+
+# Original Design: SAGE Adaptive Learning Assistant System
 
 Looking at PocketFlow's elegant minimalist design, I'll help you plan an adaptive learning assistant system that leverages its core philosophy. Let me first examine the PocketFlow repository to understand any additional context beyond the comprehensive documentation you've provided.Now let me explore the Multi-Agent cookbook to understand PocketFlow's approach to agent coordination:Let me search for more information about PocketFlow's multi-agent capabilities:Now I have a comprehensive understanding of PocketFlow. Let me design an adaptive learning assistant system based on this minimalist framework. I'll create a system that leverages multiple specialized agents working together to provide personalized learning experiences.
 

@@ -24,6 +24,10 @@ class AssistanceOrchestratorNode(Node):
         """Determine next agent to activate."""
         # Simple logic for MVP - can be enhanced with LLM later
         
+        # If no student input and we're in interacting state, end the flow
+        if not data["student_request"] and data["current_state"] == "interacting":
+            return "end"
+        
         # If no profile exists, create one first
         if not data["has_profile"]:
             return "profile"
