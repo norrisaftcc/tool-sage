@@ -44,6 +44,17 @@ Test the system:
 sage test
 ```
 
+## Architecture Visualizations
+
+### The Mandala Architecture
+![Mandala Architecture](docs/diagrams/mandala-architecture.svg)
+
+### Learning Graph Flow
+![Learning Graph Flow](docs/diagrams/learning-graph-flow.svg)
+
+### Agent Communication
+![Agent Communication](docs/diagrams/agent-communication.svg)
+
 ## Core Concepts
 
 ### Learning as Graphs

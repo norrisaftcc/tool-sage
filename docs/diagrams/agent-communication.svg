@@ -1,0 +1,92 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#60a5fa" />
+    </marker>
+    <linearGradient id="sharedStoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#0f172a"/>
+  
+  <!-- Shared Store (Center) -->
+  <rect x="300" y="200" width="200" height="200" rx="20" fill="url(#sharedStoreGrad)" stroke="#a78bfa" stroke-width="3"/>
+  <text x="400" y="290" text-anchor="middle" fill="white" font-size="20" font-weight="bold">Shared Store</text>
+  <text x="400" y="315" text-anchor="middle" fill="#e9d5ff" font-size="14">Central State</text>
+  
+  <!-- State Items -->
+  <rect x="320" y="330" width="160" height="20" rx="5" fill="#4c1d95" opacity="0.6"/>
+  <text x="400" y="345" text-anchor="middle" fill="#f3e8ff" font-size="12">student_profiles</text>
+  
+  <rect x="320" y="355" width="160" height="20" rx="5" fill="#4c1d95" opacity="0.6"/>
+  <text x="400" y="370" text-anchor="middle" fill="#f3e8ff" font-size="12">learning_state</text>
+  
+  <!-- Orchestrator (Top) -->
+  <circle cx="400" cy="100" r="60" fill="#6366f1" stroke="#818cf8" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Orchestrator</text>
+  <text x="400" y="115" text-anchor="middle" fill="#c7d2fe" font-size="12">Coordinator</text>
+  
+  <!-- Profile Agent (Left) -->
+  <circle cx="150" cy="300" r="50" fill="#3b82f6" stroke="#60a5fa" stroke-width="2"/>
+  <text x="150" y="295" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Profile</text>
+  <text x="150" y="315" text-anchor="middle" fill="#bfdbfe" font-size="12">Analyzer</text>
+  
+  <!-- Content Agent (Right) -->
+  <circle cx="650" cy="300" r="50" fill="#10b981" stroke="#34d399" stroke-width="2"/>
+  <text x="650" y="295" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Content</text>
+  <text x="650" y="315" text-anchor="middle" fill="#a7f3d0" font-size="12">Adapter</text>
+  
+  <!-- Assessment Agent (Bottom) -->
+  <circle cx="400" cy="500" r="50" fill="#f59e0b" stroke="#fbbf24" stroke-width="2"/>
+  <text x="400" y="495" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Assessment</text>
+  <text x="400" y="515" text-anchor="middle" fill="#fde68a" font-size="12">Evaluator</text>
+  
+  <!-- Communication Arrows -->
+  <!-- Orchestrator to Store -->
+  <path d="M 400 160 L 400 200" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="180" fill="#60a5fa" font-size="12">decides</text>
+  
+  <!-- Store to Orchestrator -->
+  <path d="M 380 200 L 380 160" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Profile to Store -->
+  <path d="M 200 300 L 300 300" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="290" fill="#60a5fa" font-size="12">updates</text>
+  
+  <!-- Store to Profile -->
+  <path d="M 300 280 L 200 280" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="270" fill="#60a5fa" font-size="12">reads</text>
+  
+  <!-- Content to Store -->
+  <path d="M 600 300 L 500 300" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="520" y="290" fill="#60a5fa" font-size="12">adapts</text>
+  
+  <!-- Store to Content -->
+  <path d="M 500 280 L 600 280" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Assessment to Store -->
+  <path d="M 400 450 L 400 400" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="430" fill="#60a5fa" font-size="12">scores</text>
+  
+  <!-- Store to Assessment -->
+  <path d="M 380 400 L 380 450" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Message Queue Visualization -->
+  <g transform="translate(50, 450)">
+    <rect x="0" y="0" width="150" height="100" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="75" y="20" text-anchor="middle" fill="#94a3b8" font-size="14" font-weight="bold">Message Queue</text>
+    <rect x="10" y="30" width="130" height="15" rx="3" fill="#4c1d95" opacity="0.6"/>
+    <text x="75" y="42" text-anchor="middle" fill="#e9d5ff" font-size="10">profile_updated</text>
+    <rect x="10" y="50" width="130" height="15" rx="3" fill="#4c1d95" opacity="0.6"/>
+    <text x="75" y="62" text-anchor="middle" fill="#e9d5ff" font-size="10">content_ready</text>
+    <rect x="10" y="70" width="130" height="15" rx="3" fill="#4c1d95" opacity="0.6"/>
+    <text x="75" y="82" text-anchor="middle" fill="#e9d5ff" font-size="10">assessment_complete</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#f1f5f9" font-size="24" font-weight="bold">Agent Communication Pattern</text>
+  <text x="400" y="65" text-anchor="middle" fill="#94a3b8" font-size="16">All agents communicate through shared store</text>
+</svg>

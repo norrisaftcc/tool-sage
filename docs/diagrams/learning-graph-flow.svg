@@ -1,0 +1,92 @@
+<svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#60a5fa" />
+    </marker>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="600" fill="#0f172a"/>
+  
+  <!-- Grid -->
+  <defs>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <rect width="50" height="50" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="1000" height="600" fill="url(#grid)"/>
+  
+  <!-- Nodes -->
+  <!-- Start Node -->
+  <circle cx="100" cy="300" r="40" fill="#6366f1" stroke="#8b5cf6" stroke-width="3" filter="url(#glow)"/>
+  <text x="100" y="305" text-anchor="middle" fill="white" font-size="14" font-weight="bold">START</text>
+  
+  <!-- Concept Node -->
+  <rect x="200" y="260" width="120" height="80" rx="10" fill="#3b82f6" stroke="#60a5fa" stroke-width="2"/>
+  <text x="260" y="295" text-anchor="middle" fill="white" font-size="14">Concept:</text>
+  <text x="260" y="315" text-anchor="middle" fill="white" font-size="14">Variables</text>
+  
+  <!-- Practice Node -->
+  <rect x="400" y="260" width="120" height="80" rx="10" fill="#10b981" stroke="#34d399" stroke-width="2"/>
+  <text x="460" y="295" text-anchor="middle" fill="white" font-size="14">Practice:</text>
+  <text x="460" y="315" text-anchor="middle" fill="white" font-size="14">Exercises</text>
+  
+  <!-- Assessment Branch -->
+  <polygon points="600,300 650,250 700,300 650,350" fill="#f59e0b" stroke="#fbbf24" stroke-width="2"/>
+  <text x="650" y="305" text-anchor="middle" fill="white" font-size="14">Check</text>
+  
+  <!-- Success Path -->
+  <rect x="800" y="160" width="120" height="80" rx="10" fill="#10b981" stroke="#34d399" stroke-width="2"/>
+  <text x="860" y="195" text-anchor="middle" fill="white" font-size="14">Advance:</text>
+  <text x="860" y="215" text-anchor="middle" fill="white" font-size="14">Functions</text>
+  
+  <!-- Review Path -->
+  <rect x="800" y="360" width="120" height="80" rx="10" fill="#ef4444" stroke="#f87171" stroke-width="2"/>
+  <text x="860" y="395" text-anchor="middle" fill="white" font-size="14">Review:</text>
+  <text x="860" y="415" text-anchor="middle" fill="white" font-size="14">Variables</text>
+  
+  <!-- Edges -->
+  <!-- Start to Concept -->
+  <path d="M 140 300 L 200 300" stroke="#60a5fa" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Concept to Practice -->
+  <path d="M 320 300 L 400 300" stroke="#60a5fa" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Practice to Assessment -->
+  <path d="M 520 300 L 600 300" stroke="#60a5fa" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Assessment to Success -->
+  <path d="M 700 275 L 800 200" stroke="#34d399" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="740" y="230" fill="#34d399" font-size="12">score ≥ 80%</text>
+  
+  <!-- Assessment to Review -->
+  <path d="M 700 325 L 800 400" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="740" y="370" fill="#ef4444" font-size="12">score &lt; 80%</text>
+  
+  <!-- Review back to Concept (cycle) -->
+  <path d="M 800 420 Q 600 500 260 340" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+  
+  <!-- Legend -->
+  <g transform="translate(50, 480)">
+    <text fill="#94a3b8" font-size="16" font-weight="bold">Learning Path Elements</text>
+    <circle cx="15" cy="30" r="10" fill="#6366f1"/>
+    <text x="35" y="35" fill="#94a3b8" font-size="14">Entry Point</text>
+    
+    <rect x="5" y="50" width="20" height="15" rx="3" fill="#3b82f6"/>
+    <text x="35" y="62" fill="#94a3b8" font-size="14">Learning Node</text>
+    
+    <polygon points="15,80 20,75 25,80 20,85" fill="#f59e0b" scale="0.8"/>
+    <text x="35" y="85" fill="#94a3b8" font-size="14">Decision Point</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="500" y="40" text-anchor="middle" fill="#f1f5f9" font-size="24" font-weight="bold">Learning as Graph Traversal</text>
+  <text x="500" y="65" text-anchor="middle" fill="#94a3b8" font-size="16">Adaptive paths based on learner performance</text>
+</svg>
