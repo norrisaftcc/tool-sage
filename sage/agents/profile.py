@@ -11,6 +11,9 @@ from sage.core.persistence import AgentFork
 class LearningProfileNode(Node):
     """Tracks and analyzes student learning patterns."""
     
+    # System prompt for profile analysis
+    SYSTEM_PROMPT = """You are an expert educational psychologist analyzing student learning patterns. Return your analysis in the exact YAML format requested."""
+    
     def prep(self, shared: SharedStore) -> Dict[str, Any]:
         """Gather student interaction history."""
         return {
@@ -43,7 +46,7 @@ class LearningProfileNode(Node):
         # Generate profile analysis using Alpha-level model
         response = llm_manager.generate(
             prompt=profile_prompt,
-            system="You are an expert educational psychologist analyzing student learning patterns. Return your analysis in the exact YAML format requested.",
+            system=self.SYSTEM_PROMPT,
             fork=AgentFork.ALPHA,
             temperature=0.3  # Lower temperature for structured output
         )

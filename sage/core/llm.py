@@ -33,6 +33,15 @@ class OllamaProvider(LLMProvider):
         AgentFork.DELTA: "llama3.2:latest"       # Tiny, quick (3.2B)
     }
     
+    # Timeout configuration by model
+    TIMEOUTS = {
+        "llama2:13b": 60,
+        "deepseek-r1:latest": 60,
+        "llama3.2:latest": 30,
+        # Default timeout
+        "default": 30
+    }
+    
     def __init__(self, model: Optional[str] = None, base_url: str = "http://localhost:11434"):
         self.model = model or "llama3.2:latest"
         self.base_url = base_url
@@ -62,8 +71,9 @@ class OllamaProvider(LLMProvider):
             payload["max_tokens"] = kwargs["max_tokens"]
             
         try:
-            # Longer timeout for larger models
-            timeout = 60 if kwargs.get("model", self.model) in ["llama2:13b", "deepseek-r1:latest"] else 30
+            # Get timeout based on model
+            model_name = kwargs.get("model", self.model)
+            timeout = self.TIMEOUTS.get(model_name, self.TIMEOUTS["default"])
             
             response = requests.post(
                 f"{self.base_url}/api/generate",
@@ -81,9 +91,9 @@ class OllamaProvider(LLMProvider):
             
             return text.strip()
             
-        except Exception as e:
-            # Fallback to mock for development
-            return f"[Ollama Error: {e}] Mock response for: {prompt[:50]}..."
+        except Exception:
+            # Fallback to mock for development - don't expose internal errors
+            return f"[Ollama Error] Mock response for: {prompt[:50]}..."
     
     def is_available(self) -> bool:
         """Check if Ollama is running."""
@@ -97,7 +107,7 @@ class OllamaProvider(LLMProvider):
     @classmethod
     def for_fork(cls, fork: AgentFork) -> "OllamaProvider":
         """Create provider configured for specific fork level."""
-        model = cls.FORK_MODELS.get(fork, "llama2:7b")
+        model = cls.FORK_MODELS.get(fork, "llama3.2:latest")  # Use actual default
         return cls(model=model)
 
 
@@ -133,6 +143,7 @@ class LLMManager:
     def __init__(self):
         self.providers: Dict[str, LLMProvider] = {}
         self.default_provider = "mock"
+        self._ollama_available = None  # Cache availability check
         
         # Register default providers
         self.register("mock", MockProvider())
@@ -158,8 +169,12 @@ class LLMManager:
     
     def generate(self, prompt: str, fork: AgentFork = AgentFork.BETA, **kwargs) -> str:
         """Generate with appropriate provider for fork level."""
+        # Check Ollama availability (cached)
+        if self._ollama_available is None:
+            self._ollama_available = self.providers["ollama"].is_available()
+            
         # For Ollama, use fork-specific model
-        if "ollama" in self.providers and self.providers["ollama"].is_available():
+        if self._ollama_available:
             provider = OllamaProvider.for_fork(fork)
         else:
             provider = self.get_provider()

@@ -9,6 +9,10 @@ from sage.core.persistence import AgentFork
 class ResponseGeneratorNode(Node):
     """Generates appropriate responses to students."""
     
+    # System prompt for educational responses
+    SYSTEM_PROMPT = """You are SAGE, an adaptive learning assistant. You adjust your teaching style based on the student's profile.
+Be encouraging, clear, and pedagogically sound. Keep responses concise and focused."""
+    
     def prep(self, shared: SharedStore) -> Dict[str, Any]:
         """Gather context for response generation."""
         student_id = shared.get("current_student", "default_student")
@@ -43,9 +47,8 @@ class ResponseGeneratorNode(Node):
             result = data["assessment_results"]
             context_parts.append(f"Assessment result: score={result.get('score', 0)}%, feedback={result.get('feedback', '')}")
         
-        # Build system prompt based on agent's teaching style
-        system_prompt = """You are SAGE, an adaptive learning assistant. You adjust your teaching style based on the student's profile.
-        Be encouraging, clear, and pedagogically sound. Keep responses concise and focused."""
+        # Use class-level system prompt
+        system_prompt = self.SYSTEM_PROMPT
         
         # Build the prompt
         prompt = f"""Context: {' | '.join(context_parts)}
