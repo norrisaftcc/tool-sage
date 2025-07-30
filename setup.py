@@ -10,6 +10,7 @@ setup(
         "click>=8.0.0",
         "pyyaml>=6.0",
         "typing-extensions>=4.0.0",
+        "requests>=2.25.0",  # For Ollama API
     ],
     extras_require={
         "dev": [

@@ -4,7 +4,8 @@ import yaml
 from typing import Dict, Any
 from datetime import datetime
 from sage.core.base import Node, SharedStore
-from sage.core.mock_llm import call_llm
+from sage.core.llm import llm_manager
+from sage.core.persistence import AgentFork
 
 
 class LearningProfileNode(Node):
@@ -39,7 +40,15 @@ class LearningProfileNode(Node):
         - areas_for_improvement: []
         """
         
-        return call_llm(profile_prompt)
+        # Generate profile analysis using Alpha-level model
+        response = llm_manager.generate(
+            prompt=profile_prompt,
+            system="You are an expert educational psychologist analyzing student learning patterns. Return your analysis in the exact YAML format requested.",
+            fork=AgentFork.ALPHA,
+            temperature=0.3  # Lower temperature for structured output
+        )
+        
+        return response
     
     def post(self, shared: SharedStore, prep_res: Dict[str, Any], exec_res: str) -> str:
         """Update student profile in shared store."""
