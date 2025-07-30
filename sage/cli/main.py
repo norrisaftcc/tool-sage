@@ -6,6 +6,7 @@ from sage.core.persistence import ProfilePersistence, JSONPersistence
 from sage.agents.orchestrator import AssistanceOrchestratorNode
 from sage.agents.profile import LearningProfileNode
 from sage.agents.responder import ResponseGeneratorNode
+from sage.agents.adapter import ContentAdaptationNode
 
 
 def save_session(flow: Flow, profile_persistence: ProfilePersistence, student_id: str) -> None:
@@ -34,14 +35,14 @@ def create_sage_flow() -> Flow:
     orchestrator = AssistanceOrchestratorNode(name="orchestrator")
     profile_agent = LearningProfileNode(name="profile")
     responder = ResponseGeneratorNode(name="respond")
+    adapter = ContentAdaptationNode(name="adapt")
     
     # Wire up the flow
     # Orchestrator decides which agent to activate
     orchestrator >> {
         "profile": profile_agent,
         "respond": responder,
-        # Add more agents as we build them
-        "adapt": responder,  # Placeholder
+        "adapt": adapter,  # Content adaptation based on sentiment
         "question": responder,  # Placeholder
         "progress": responder,  # Placeholder
         "end": None  # Termination state
@@ -49,6 +50,9 @@ def create_sage_flow() -> Flow:
     
     # Profile agent returns to orchestrator for next decision
     profile_agent >> orchestrator
+    
+    # Adapter analyzes and goes to responder
+    adapter >> responder
     
     # Responder ends the flow cycle (no return to orchestrator)
     # This prevents infinite loops

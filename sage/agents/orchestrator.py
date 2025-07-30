@@ -45,8 +45,8 @@ class AssistanceOrchestratorNode(Node):
             elif any(word in request_lower for word in ["progress", "how am i doing"]):
                 return "progress"
             else:
-                # For now, respond directly
-                return "respond"
+                # Always adapt content based on sentiment before responding
+                return "adapt"
         
         # Default flow based on state
         if data["current_state"] == "initial":
