@@ -61,8 +61,9 @@ class JSONPersistence(PersistenceProvider):
     
     def _get_path(self, key: str, fork: AgentFork) -> Path:
         """Get file path for a key at given fork level."""
-        # Sanitize key for filesystem
-        safe_key = key.replace("/", "_").replace("\\", "_")
+        # Sanitize key for filesystem using double underscore as separator
+        # This preserves single underscores in timestamps
+        safe_key = key.replace("/", "__").replace("\\", "__")
         return self.storage_paths[fork] / f"{safe_key}.json"
     
     def save(self, key: str, data: Dict[str, Any], fork: AgentFork = AgentFork.ALPHA) -> None:
@@ -101,17 +102,23 @@ class JSONPersistence(PersistenceProvider):
     
     def list_keys(self, pattern: str = "*", fork: AgentFork = AgentFork.ALPHA) -> list:
         """List all keys in a fork level."""
-        import glob
+        import fnmatch
         
-        search_pattern = self.storage_paths[fork] / f"{pattern}.json"
-        files = glob.glob(str(search_pattern))
+        # Get all files in the fork directory
+        fork_path = self.storage_paths[fork]
+        if not fork_path.exists():
+            return []
         
         keys = []
-        for file in files:
-            name = Path(file).stem
-            # Reverse the sanitization
-            key = name.replace("_", "/")
-            keys.append(key)
+        for file_path in fork_path.glob("*.json"):
+            # Get the key from filename
+            name = file_path.stem
+            # Reverse the sanitization - double underscore back to slash
+            key = name.replace("__", "/")
+            
+            # Check if key matches pattern
+            if fnmatch.fnmatch(key, pattern):
+                keys.append(key)
         
         return sorted(keys)
 
