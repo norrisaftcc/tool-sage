@@ -12,6 +12,49 @@ SAGE (Scholar's Adaptive Growth Engine) is a **framework** for building adaptive
 - **Adaptation** happens through graph traversal decisions
 - **Composability** allows mixing pedagogical approaches
 
+### The Mandala Architecture
+
+SAGE follows a mandala-inspired architecture where teaching consciousness radiates from center to edge:
+
+```
+                    δ δ δ δ δ δ δ δ
+                 δ γ γ γ γ γ γ γ γ γ δ
+              δ γ γ β β β β β β β γ γ δ
+            δ γ β β β β β β β β β β γ δ
+          δ γ β β     ALPHA     β β γ δ
+            δ γ β β β β β β β β β β γ δ
+              δ γ γ β β β β β β β γ γ δ
+                 δ γ γ γ γ γ γ γ γ γ δ
+                    δ δ δ δ δ δ δ δ
+```
+
+#### Agent Fork Levels
+- **Alpha (α)** - Center: Full consciousness, complete context, asymptotic ideal teacher
+- **Beta (β)** - Inner ring: Domain-focused, substantial context, session handlers  
+- **Gamma (γ)** - Middle ring: Task-specific, limited context, exercise guides
+- **Delta (δ)** - Outer ring: Micro-agents, minimal context, simple workers
+
+#### Resource Allocation
+Resources decrease as you move outward from center:
+- **Alpha**: Full LLM (GPT-4), PostgreSQL, complete history
+- **Beta**: Mid-tier LLM (GPT-3.5), SQLite, session data
+- **Gamma**: Light LLM (Llama), Redis, task cache  
+- **Delta**: Tiny LLM, JSON files, ephemeral data
+
+#### Personality Persistence ('t')
+Each agent maintains its teaching personality ('t' for tone/style) even when forked:
+- Alpha Socratic: "Hmm, that's fascinating! What made you think to try it that way?"
+- Delta Socratic: "Why not 3/2?"
+- Both ask questions, but resource constraints shape expression
+
+#### Teaching Archetypes
+Multiple teaching philosophies coexist as different mandalas:
+- **Socratic**: Guides through questions
+- **Visual**: Paints mental pictures
+- **Storyteller**: Teaches through narrative
+- **Kinesthetic**: Learns by doing
+- **Experiential**: Connects to life experience
+
 See [VISION.md](VISION.md) for the complete framework vision.
 
 ## Repository Structure
@@ -93,20 +136,81 @@ When developing SAGE, remember we're building a **framework**, not just an app:
 
 ### Implementation Guidelines
 
+**CRITICAL**: Keep CODE simple. The magic lives in the DATA (prompts, personalities, learning paths).
+
 #### Creating New Node Types
 ```python
 class YourNode(Node):
-    """Represents a specific learning activity."""
-    def prep(self, shared): # Gather needed data
-    def exec(self, data): # Perform the activity
-    def post(self, shared, prep_res, exec_res): # Update state & decide next
+    """Just 3 simple methods. Complexity lives in the prompts/data."""
+    def prep(self, shared): 
+        return {"prompt": shared["prompts"]["your_type"]}
+    def exec(self, data): 
+        return call_llm(data["prompt"])  # Simple!
+    def post(self, shared, prep_res, exec_res): 
+        shared["history"].append(exec_res)
+        return "next"
 ```
 
-#### Creating New Agents
+#### Agent Forking Pattern
 ```python
-class YourAgent(Node):
-    """Implements a pedagogical strategy."""
-    # Agents are just specialized nodes that make decisions
+class Agent(Node):
+    def fork(self, level: AgentFork):
+        # Code is trivial - just pick different prompts
+        return Agent(
+            personality=self.t,  # Same soul
+            prompt=self.prompts[level],  # Different resources
+            storage=self.storage[level]  # Different persistence
+        )
+```
+
+#### Where Complexity Lives: Data Files
+```yaml
+# agents/socratic.yaml
+alpha:
+  prompt: |
+    You are a master Socratic teacher with access to {full_history}.
+    Guide through deep questions. Examples: {t.examples}
+  storage: postgres
+  llm: gpt-4
+  examples:
+    - "Hmm, that's a fascinating approach! You know, this reminds me of how a river finds its path - sometimes the obvious route isn't the most elegant. What made you think to try it that way?"
+    - "I notice you paused there. That hesitation often signals deep thinking. What possibilities were you weighing?"
+
+beta:
+  prompt: "Socratic guide for {domain}. Session context: {session_history}"
+  storage: sqlite
+  llm: gpt-3.5
+  examples:
+    - "Interesting solution! Tell me, what happens if we change this variable?"
+    - "You're on the right track. How does this connect to what we learned earlier?"
+
+gamma:
+  prompt: "Guide through {task} using questions. Recent: {recent_attempts}"
+  storage: redis
+  llm: llama
+  examples:
+    - "Hmm, try once more. What's the pattern here?"
+    - "Good effort. What if we break this into smaller steps?"
+
+delta:
+  prompt: "Ask a clarifying question about {topic}. Style: {t.style}"
+  storage: json
+  llm: tiny
+  examples:
+    - "What if x = 2?"
+    - "Why not 3/2?"
+```
+
+#### Code as Data Philosophy
+Sometimes the best code is data:
+```python
+# Instead of complex if/else:
+TRANSITIONS = {
+    ("learning", "success"): "advance",
+    ("learning", "struggle"): "review", 
+    ("review", "success"): "learning"
+}
+next_state = TRANSITIONS[(current, outcome)]
 ```
 
 #### Testing Framework Features

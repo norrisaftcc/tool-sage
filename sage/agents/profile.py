@@ -2,6 +2,7 @@
 
 import yaml
 from typing import Dict, Any
+from datetime import datetime
 from sage.core.base import Node, SharedStore
 from sage.core.mock_llm import call_llm
 
@@ -51,6 +52,15 @@ class LearningProfileNode(Node):
             
             # Update profile
             shared["student_profiles"][prep_res["student_id"]] = profile
+            
+            # Track this interaction
+            if "interactions" not in shared._store:
+                shared["interactions"] = []
+            shared["interactions"].append({
+                "type": "profile_analysis",
+                "timestamp": str(datetime.now()),
+                "result": "profile_updated"
+            })
             
             # Log the analysis
             if "logs" not in shared._store:
