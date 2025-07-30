@@ -69,7 +69,8 @@ else:
         # Check for required models
         echo
         echo "Checking required models..."
-        required_models=("llama2:13b" "deepseek-r1:latest" "llama3.2:latest")
+        required_models=("llama2:7b" "llama3.2:latest")
+        optional_models=("deepseek-r1:latest" "llama2:13b")
         missing_models=()
         
         for model in "${required_models[@]}"; do
@@ -93,6 +94,17 @@ else:
                 done
             fi
         fi
+        
+        # Check optional models
+        echo
+        echo "Optional models (for enhanced features):"
+        for model in "${optional_models[@]}"; do
+            if curl -s http://localhost:11434/api/tags | grep -q "\"$model\""; then
+                echo "  ✓ $model"
+            else
+                echo "  ○ $model (not installed)"
+            fi
+        done
     else
         echo "⚠️  Ollama is not running"
         echo "   Start it with: ollama serve"

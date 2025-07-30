@@ -27,8 +27,8 @@ class OllamaProvider(LLMProvider):
     
     # Model mapping for fork levels (using available models)
     FORK_MODELS = {
-        AgentFork.ALPHA: "llama2:13b",           # Highest quality (13B)
-        AgentFork.BETA: "deepseek-r1:latest",    # Good balance (7.6B) 
+        AgentFork.ALPHA: "llama2:7b",            # High quality, reasonable speed (7B)
+        AgentFork.BETA: "llama3.2:latest",       # Good balance (3.2B) 
         AgentFork.GAMMA: "llama3.2:latest",      # Fast, focused (3.2B)
         AgentFork.DELTA: "llama3.2:latest"       # Tiny, quick (3.2B)
     }

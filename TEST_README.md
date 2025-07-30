@@ -127,6 +127,35 @@ journalctl -u ollama -f  # If using systemd
 # Or check Ollama's console output
 ```
 
+## Conversation Management
+
+### During conversation:
+- Type `/export` to save current conversation immediately
+- Type `/help` to see available commands
+- Type `exit` or `quit` to end and auto-save
+
+### After conversation:
+```bash
+# List all saved conversations
+sage history
+
+# List conversations for specific student
+sage history -s alice
+
+# View a specific conversation
+cat ~/.sage/conversations/sage_conversation_alice_20240130_143022.json | jq .
+
+# Disable auto-export
+sage learn --no-export
+```
+
+### Conversation files include:
+- Full message history
+- Sentiment analysis results
+- Adaptation decisions
+- Agent activity logs
+- Student profile at time of conversation
+
 ## Common Issues
 
 1. **"Ollama Error" in responses**
