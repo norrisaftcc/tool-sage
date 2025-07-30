@@ -2,9 +2,30 @@
 
 import click
 from sage.core.base import Flow, SharedStore
+from sage.core.persistence import ProfilePersistence, JSONPersistence
 from sage.agents.orchestrator import AssistanceOrchestratorNode
 from sage.agents.profile import LearningProfileNode
 from sage.agents.responder import ResponseGeneratorNode
+
+
+def save_session(flow: Flow, profile_persistence: ProfilePersistence, student_id: str) -> None:
+    """Save the current session data."""
+    profiles = flow.shared.get("student_profiles", {})
+    
+    if student_id in profiles:
+        profile = profiles[student_id]
+        
+        # Update interaction history
+        profile["interaction_history"] = flow.shared.get("interactions", [])
+        profile["last_topic"] = flow.shared.get("topic", "general")
+        profile["total_sessions"] = profile.get("total_sessions", 0) + 1
+        
+        # Save the updated profile
+        profile_persistence.save_profile(student_id, profile)
+        
+        # Also save session summary at delta level
+        summary = f"Worked on {profile['last_topic']}, {len(flow.shared.get('conversation', []))} exchanges"
+        profile_persistence.save_summary(student_id, summary)
 
 
 def create_sage_flow() -> Flow:
@@ -32,10 +53,11 @@ def create_sage_flow() -> Flow:
     # Responder ends the flow cycle (no return to orchestrator)
     # This prevents infinite loops
     
-    # Create flow with initial shared state
-    flow = Flow(
-        shared=SharedStore()
-    )
+    # Create flow with persistent shared state
+    persistence = JSONPersistence()
+    shared = SharedStore(persistence=persistence)
+    
+    flow = Flow(shared=shared)
     
     # Initialize shared store
     flow.shared.update({
@@ -71,6 +93,16 @@ def learn(student: str, topic: str):
     flow.shared["current_student"] = student
     flow.shared["topic"] = topic
     
+    # Load existing profile if available
+    profile_persistence = ProfilePersistence(flow.shared.persistence)
+    existing_profile = profile_persistence.load_profile(student)
+    
+    if existing_profile:
+        click.echo(f"✨ Welcome back! Loading your profile...")
+        flow.shared["student_profiles"][student] = existing_profile
+        # Load conversation history too
+        flow.shared["interactions"] = existing_profile.get("interaction_history", [])
+    
     # Initial run to get first response
     flow.run(max_steps=10)
     
@@ -85,6 +117,8 @@ def learn(student: str, topic: str):
             user_input = click.prompt('\n📝 You', type=str)
             
             if user_input.lower() in ['exit', 'quit', 'bye']:
+                # Save profile before exit
+                save_session(flow, profile_persistence, student)
                 click.echo("\n👋 Thanks for learning with SAGE! See you next time.")
                 break
             
@@ -111,7 +145,8 @@ def learn(student: str, topic: str):
                     click.echo(f"  - {log}")
                     
         except KeyboardInterrupt:
-            click.echo("\n\n👋 Thanks for learning with SAGE!")
+            save_session(flow, profile_persistence, student)
+            click.echo("\n\n👋 Thanks for learning with SAGE! (Progress saved)")
             break
         except Exception as e:
             click.echo(f"\n❌ Error: {e}")

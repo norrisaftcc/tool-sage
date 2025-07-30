@@ -4,14 +4,16 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional, List, Callable
 import asyncio
 from dataclasses import dataclass, field
+from .persistence import PersistenceProvider, JSONPersistence, AgentFork
 
 
 class SharedStore:
-    """Central state store for agent communication."""
+    """Central state store for agent communication with persistence."""
     
-    def __init__(self):
+    def __init__(self, persistence: Optional[PersistenceProvider] = None):
         self._store: Dict[str, Any] = {}
         self._listeners: Dict[str, List[Callable]] = {}
+        self.persistence = persistence or JSONPersistence()
     
     def get(self, key: str, default: Any = None) -> Any:
         """Get value from store."""
