@@ -236,3 +236,55 @@ When adding features, ask:
 - "Is this specific to one use case or broadly applicable?"
 - "Can this be composed with other components?"
 - "Does this maintain the minimalist philosophy?"
+
+## Development Process
+
+### Working with Claude Code
+
+When working with Claude Code (claude.ai/code), follow these practices:
+
+1. **Use GitHub Issues and PRs** - All changes should go through proper channels for transparency
+2. **Leverage Code Review** - After implementing features, proactively ask Copilot to review PRs:
+   - Address all high-confidence suggestions
+   - Evaluate medium/low confidence suggestions based on complexity vs benefit
+   - Don't over-engineer based on every suggestion
+3. **Test Incrementally** - Build features step by step with tests at each stage
+4. **Document as You Go** - Update relevant docs (README, TEST_README, CLAUDE.md) with each PR
+
+### Code Review Process
+
+We use GitHub Copilot for automated code review. When it flags issues:
+
+1. **Configuration/Constants** - Extract magic values, hard-coded strings
+2. **Error Handling** - Don't expose internal errors to users
+3. **Performance** - Cache expensive operations, avoid repeated calls
+4. **Maintainability** - Extract complex logic to named functions/constants
+
+Example from PR #16:
+- ✅ Extracted timeout values to TIMEOUTS dictionary
+- ✅ Removed internal error details from user messages  
+- ✅ Added caching for Ollama availability checks
+- ✅ Moved system prompts to class constants
+
+### Testing Philosophy
+
+1. **Unit Tests First** - Test individual components in isolation
+2. **Integration Tests** - Test agent interactions and flow
+3. **Manual Testing** - Use TEST_README.md for exploratory testing
+4. **Export for Analysis** - Use conversation export to debug issues
+
+### Commit and PR Standards
+
+1. **Atomic Commits** - Each commit should do one thing
+2. **Descriptive Messages** - Explain the "why" not just the "what"
+3. **PR Templates** - Include summary, test plan, and closing issues
+4. **Link Issues** - Always reference the issue being addressed
+
+### Using Ollama for Development
+
+Default models for quick iteration:
+- **Alpha**: llama2:7b (was 13b, but 7b is faster for testing)
+- **Beta**: llama3.2:latest  
+- **Gamma/Delta**: llama3.2:latest
+
+The setup.sh script handles model management automatically.
