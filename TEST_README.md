@@ -2,23 +2,33 @@
 
 This guide helps you manually test SAGE's adaptive learning features.
 
+## Setup
+
+Run the setup script to create a virtual environment and install everything:
+
+```bash
+# First time setup
+./setup.sh
+
+# This will:
+# - Create a Python virtual environment
+# - Install SAGE and all dependencies
+# - Check for Ollama and required models
+# - Offer to download missing models
+```
+
 ## Prerequisites
 
-1. **Ollama must be running**:
+After setup, for each new terminal session:
+
+1. **Activate the virtual environment**:
+   ```bash
+   source venv/bin/activate
+   ```
+
+2. **Make sure Ollama is running**:
    ```bash
    ollama serve
-   ```
-
-2. **Required models** (pull if needed):
-   ```bash
-   ollama pull llama2:13b      # For Alpha-level (profile analysis)
-   ollama pull deepseek-r1     # For Beta-level (general responses)
-   ollama pull llama3.2        # For Gamma/Delta (quick responses)
-   ```
-
-3. **Install SAGE** (from project root):
-   ```bash
-   pip install -e ".[dev]"
    ```
 
 ## Quick Test

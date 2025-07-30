@@ -20,8 +20,11 @@ SAGE is not just another tutoring app - it's a **framework** that treats learnin
 git clone https://github.com/norrisaftcc/tool-sage.git
 cd tool-sage
 
-# Install in development mode
-pip install -e ".[dev]"
+# Run setup script (creates virtual environment and installs everything)
+./setup.sh
+
+# Activate the virtual environment
+source venv/bin/activate
 ```
 
 ### Usage

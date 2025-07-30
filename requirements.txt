@@ -2,6 +2,7 @@
 click>=8.0.0  # CLI framework
 pyyaml>=6.0  # YAML parsing for agent communication
 typing-extensions>=4.0.0  # Type hints
+requests>=2.25.0  # For Ollama API
 
 # Development dependencies
 pytest>=7.0.0  # Testing
