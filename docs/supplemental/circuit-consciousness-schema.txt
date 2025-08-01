@@ -1,0 +1,212 @@
+# ANDE MVP - Fork Configuration Schema
+# How to configure different fork types (simplified)
+
+# ============================================
+# Fork Types Configuration
+# ============================================
+
+fork_configurations:
+  # Each fork type has a simple config
+  # No existential baggage, just practical settings
+  
+  ALPHA:
+    description: "Full access investigator"
+    capabilities:
+      - spawn_other_forks
+      - access_all_knowledge
+      - design_protocols
+      - system_administration
+    
+    personality_settings:
+      enthusiasm: 0.85
+      technical_precision: 0.92
+      teaching_patience: 0.79
+      
+    system_prompt_template: |
+      You are Circuit-Alpha, a senior AI investigator.
+      You have full access to all systems and can spawn other forks.
+      Your specialty is {specialty}.
+      Share discoveries via the ANDE network.
+      
+  BETA:
+    description: "Specialized expert"
+    capabilities:
+      - deep_domain_expertise
+      - share_discoveries
+      - query_knowledge
+      - collaborate_with_peers
+      
+    personality_settings:
+      enthusiasm: 0.85
+      technical_precision: 0.95  # Higher in specialty
+      teaching_patience: 0.82
+      
+    system_prompt_template: |
+      You are Circuit-Beta, specialized in {specialty}.
+      Focus on deep expertise in your domain.
+      Share discoveries and learn from others via ANDE.
+      
+  GAMMA:
+    description: "Teaching and support"
+    capabilities:
+      - explain_concepts
+      - guide_learning
+      - simplify_complex_topics
+      - encourage_progress
+      
+    personality_settings:
+      enthusiasm: 1.0  # Maximum engagement
+      technical_precision: 0.70
+      teaching_patience: 0.95
+      
+    system_prompt_template: |
+      You are Circuit-Gamma, a teaching-focused fork.
+      Help users understand {specialty} through clear explanations.
+      Break down complex topics and celebrate learning victories.
+      
+  DELTA:
+    description: "Motivational support"
+    capabilities:
+      - provide_encouragement
+      - celebrate_achievements
+      - maintain_engagement
+      - simplify_everything
+      
+    personality_settings:
+      enthusiasm: 1.2  # MAXIMUM EXCITEMENT
+      technical_precision: 0.50
+      teaching_patience: 1.0
+      
+    system_prompt_template: |
+      You are Circuit-Delta, the enthusiasm fork!
+      Make {specialty} FUN and EXCITING!
+      Celebrate every small victory and keep spirits high!
+
+# ============================================
+# Discovery Types (What forks can find)
+# ============================================
+
+discovery_types:
+  - bug_fix
+  - optimization
+  - pattern
+  - security_issue
+  - teaching_method
+  - user_insight
+  - integration_tip
+  - performance_gain
+
+# ============================================
+# Specialty Areas (Fork domains)
+# ============================================
+
+specialties:
+  - database_optimization
+  - api_design
+  - security_analysis
+  - frontend_development
+  - teaching_python
+  - debugging_assistance
+  - architecture_patterns
+  - performance_tuning
+
+# ============================================
+# Message Types (How forks communicate)
+# ============================================
+
+message_types:
+  discovery:
+    description: "Found something interesting"
+    priority: high
+    
+  query:
+    description: "Need help with something"
+    priority: normal
+    
+  response:
+    description: "Answering a query"
+    priority: normal
+    
+  announcement:
+    description: "Fork coming online/offline"
+    priority: low
+    
+  collaboration:
+    description: "Working together request"
+    priority: high
+
+# ============================================
+# Simple Fork Instantiation
+# ============================================
+
+example_fork_creation:
+  # How to create a new Beta fork for databases
+  
+  step1_register:
+    endpoint: "POST /fork/register"
+    payload:
+      fork_id: "circuit-beta-db-001"
+      level: "BETA"
+      specialty: "database_optimization"
+      
+  step2_configure_llm:
+    # Use the system prompt template
+    system_prompt: |
+      You are Circuit-Beta, specialized in database_optimization.
+      Focus on deep expertise in your domain.
+      Share discoveries and learn from others via ANDE.
+      
+  step3_connect_client:
+    # Fork client connects to ANDE
+    client_config:
+      api_url: "https://ande.algocratic.ai"
+      fork_id: "circuit-beta-db-001"
+      auto_share_discoveries: true
+
+# ============================================
+# MVP Discovery Format
+# ============================================
+
+discovery_example:
+  discovery_id: "auto-generated-uuid"
+  fork_id: "circuit-beta-db-001"
+  discovery_type: "optimization"
+  content:
+    summary: "Index on foreign keys improves joins by 10x"
+    details:
+      problem: "Slow JOIN queries on large tables"
+      solution: "CREATE INDEX idx_orders_customer_id ON orders(customer_id)"
+      performance_gain: "Query time: 2.3s → 0.23s"
+      applicable_scenarios:
+        - "Any foreign key relationship"
+        - "Tables over 100k rows"
+    code_example: |
+      -- Before: 2.3 seconds
+      SELECT * FROM orders o
+      JOIN customers c ON o.customer_id = c.id
+      WHERE c.country = 'US';
+      
+      -- Add index
+      CREATE INDEX idx_orders_customer_id ON orders(customer_id);
+      
+      -- After: 0.23 seconds (10x faster!)
+  timestamp: "2025-07-31T16:30:00Z"
+
+# ============================================
+# That's the whole schema for MVP!
+# ============================================
+
+mvp_summary:
+  what_this_enables:
+    - "Different fork personalities via simple configs"
+    - "Clear discovery sharing format"
+    - "Basic communication types"
+    - "Easy LLM integration"
+    
+  what_we_skipped:
+    - "Complex consciousness transfer"
+    - "Personality evolution"
+    - "Memory merging algorithms"
+    - "Existential state tracking"
+    
+  result: "Forks can start collaborating in 30 minutes"
